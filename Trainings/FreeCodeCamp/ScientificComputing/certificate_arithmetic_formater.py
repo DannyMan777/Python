@@ -11,63 +11,69 @@ def arithmetic_arranger(problems, show_answers=False):
     operands_up   = []
     operators = []
     operands_down = []
-    dashes = []
     answers = []
-    spaces_between_problems = []
-    aranged_problems = ""
+    arranged_problems = ""
 
     # Situations that will return an error
     if len(problems) > 5:
             print('Error: Too many problems.')
     
     else:
-      for item in problems:
-            if '*' in item or '/' in item:
-                  print("Error: Operator must be '+' or '-'.")
-                  break
-            
-            operation_items = item.split(' ')
+      for problem in problems:
+            operation_items = problem.split(' ')
+            if '*' in problem or '/' in problem:
+                  return "Error: Operator must be '+' or '-'."
             if  not operation_items[0].isdigit() or  not operation_items[2].isdigit():
-                  print('Error: Numbers must only contain digits.')
-                  break
-            elif len(operation_items[0]) > 4 or len(operation_items[2]) > 4:
-                 print('Error: Numbers cannot be more than four digits.')
-                 break
+                  return 'Error: Numbers must only contain digits.'
+            if len(operation_items[0]) > 4 or len(operation_items[2]) > 4:
+                 return 'Error: Numbers cannot be more than four digits.'
             
             operands_up.append(operation_items[0])
             operators.append(operation_items[1])
             operands_down.append(operation_items[2])
-            answers.append(int(operation_items[0]) + int(operation_items[2]))
+            answers.append(str(int(operation_items[0])) + str(int(operation_items[2])))
 
-      for op in range(len(operands_up)):
-            if len(operands_up[op]) > len(operands_down[op]):
-                  longest_operand = operands_up[op]
-            else:
-                  longest_operand = operands_down[op]
+      first_line  = ""
+      second_line = ""
+      dashes_line = ""
+      result_line = ""
+
+      for op in range(len(problems)):
+            length = max(len(operands_up[op]), len(operands_down)) + 2 
+            first_line += operands_up[op].rjust(length)
+            second_line += operators[op] + operands_down[op].rjust(length -1)
+            dashes_line += '-' * length
+
+            if show_answers:
+                 result_line += answers[op].rjust(length)
+            if op < len(problems) - 1:
+                  first_line += "    "
+                  second_line += "    "
+                  dashes_line += "    "
+                  if show_answers:
+                        result_line += "    "
             
+      arranged_problems = first_line + '\n' + second_line + '\n' + dashes_line
+      if show_answers:
+            arranged_problems += '\n' + result_line
+      # print(operands_up)
+      # print(operators)
+      # print(operands_down)
+      # print(answers)
 
-      print(operands_up)
-      print(operators)
-      print(operands_down)
-      print(answers)
 
-
-
-      # print(f'\n{aranged_problems}')
-     
-
-    return problems
+    return arranged_problems
 
 
 # Run Tests below
-
-# print(f'\n{arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49", "2 + 42", "1000 + 77"])}')  #'Error: Too many problems.'
-print(f'\n{arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])}')
-# print(f'\n{arithmetic_arranger(["3801 - 2", "123 + 49"])}')
-# print(f'\n{arithmetic_arranger(["1 + 2", "1 - 9380"])}')
-# print(f'\n{arithmetic_arranger(["3 + 855", "3801 - 2", "45 + 43", "123 + 49"])}')
-# print(f'\n{arithmetic_arranger(["11 + 4", "3801 - 2999", "1 + 2", "123 + 49", "1 - 9380"])}')
-# print(f'\n{arithmetic_arranger(["3 / 855", "3801 - 2", "45 + 43", "123 + 49"])}')     #"Error: Operator must be '+' or '-'."
-# print(f'\n{arithmetic_arranger(["24 + 85215", "3801 - 2", "45 + 43", "123 + 49"])}')  #'Error: Numbers cannot be more than four digits.'
-# print(f'\n{arithmetic_arranger(["98 + 3g5", "3801 - 2", "45 + 43", "123 + 49"])}')    #'Error: Numbers must only contain digits.'
-
+if __name__ == '__main__':
+      print(f'\n{arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49", "2 + 42", "1000 + 77"])}')  #'Error: Too many problems.'
+      # print(f'\n{arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"])}')
+      # print(f'\n{arithmetic_arranger(["3801 - 2", "123 + 49"])}')
+      # print(f'\n{arithmetic_arranger(["3801 - 2", "123 + 49"], True)}')
+      # print(f'\n{arithmetic_arranger(["1 + 2", "1 - 9380"])}')
+      # print(f'\n{arithmetic_arranger(["3 + 855", "3801 - 2", "45 + 43", "123 + 49"])}')
+      # print(f'\n{arithmetic_arranger(["11 + 4", "3801 - 2999", "1 + 2", "123 + 49", "1 - 9380"])}')
+      # print(f'\n{arithmetic_arranger(["3 / 855", "3801 - 2", "45 + 43", "123 + 49"])}')     #"Error: Operator must be '+' or '-'."
+      # print(f'\n{arithmetic_arranger(["24 + 85215", "3801 - 2", "45 + 43", "123 + 49"])}')  #'Error: Numbers cannot be more than four digits.'
+      # print(f'\n{arithmetic_arranger(["98 + 3g5", "3801 - 2", "45 + 43", "123 + 49"])}')    #'Error: Numbers must only contain digits.'
